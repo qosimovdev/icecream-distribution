@@ -1,54 +1,5 @@
 const { StoreSupply } = require("../model/storeSupplySchema")
 
-// const getDailyReport = async (req, res) => {
-//     try {
-//         const { date } = req.query;
-
-//         if (!date || !/^\d{4}-\d{2}-\d{2}$/.test(date)) {
-//             return res.status(400).json({
-//                 success: false,
-//                 message: "Invalid date format. Use YYYY-MM-DD"
-//             });
-//         }
-
-//         const start = new Date(date);
-//         start.setHours(0, 0, 0, 0);
-
-//         const end = new Date(date);
-//         end.setHours(23, 59, 59, 999);
-
-//         const data = await StoreSupply.aggregate([
-//             { $match: { createdAt: { $gte: start, $lte: end } } },
-//             {
-//                 $group: {
-//                     _id: null,
-//                     totalQuantity: { $sum: "$quantity" },
-//                     totalAmount: { $sum: "$totalAmount" },
-//                     totalPaid: { $sum: "$paidAmount" },
-//                 }
-//             },
-//             {
-//                 $project: {
-//                     _id: 0,
-//                     totalQuantity: 1,
-//                     totalAmount: 1,
-//                     totalDebt: { $subtract: ["$totalAmount", "$totalPaid"] }
-//                 }
-//             }
-//         ]);
-
-//         // Agar kun bo‘yicha yozuv bo‘lmasa, default qiymat berish
-//         const result = data[0] || { totalQuantity: 0, totalAmount: 0, totalDebt: 0 };
-
-//         res.json({ success: true, data: result });
-
-//     } catch (e) {
-//         res.status(500).json({ success: false, message: e.message });
-//     }
-// };
-
-
-
 const getDailyReport = async (req, res) => {
     try {
         let { date } = req.query;
@@ -89,47 +40,6 @@ const getDailyReport = async (req, res) => {
         res.status(500).json({ success: false, message: "xato", error: e.message });
     }
 };
-
-
-
-// const getDailyReport = async (req, res) => {
-//     try {
-//         const { date } = req.query;
-//         if (!date || !/^\d{4}-\d{2}-\d{2}$/.test(date)) {
-//             return res.status(400).json({
-//                 success: false,
-//                 message: "Invalid date format. Use YYYY-MM-DD"
-//             });
-//         }
-
-//         const start = new Date(date);
-//         start.setHours(0, 0, 0, 0);
-
-//         const end = new Date(date);
-//         end.setHours(23, 59, 59, 999);
-
-//         const data = await StoreSupply.aggregate([
-//             { $match: { createdAt: { $gte: start, $lte: end } } },
-//             {
-//                 $group: {
-//                     _id: null,
-//                     totalQuantity: { $sum: "$quantity" }, // jami sotilgan dona
-//                     totalSales: { $sum: "$totalAmount" }, // jami summa
-//                     totalDebt: { $sum: { $subtract: ["$totalAmount", "$paidAmount"] } } // qarz
-//                 }
-//             },
-//             { $project: { _id: 0, totalQuantity: 1, totalSales: 1, totalDebt: 1 } }
-//         ]);
-
-//         const result = data[0] || { totalQuantity: 0, totalSales: 0, totalDebt: 0 };
-
-//         res.json({ success: true, data: result });
-//     } catch (e) {
-//         res.status(500).json({ success: false, message: e.message });
-//     }
-// };
-
-
 
 // Monthly Report
 const getMonthlyReport = async (req, res) => {
